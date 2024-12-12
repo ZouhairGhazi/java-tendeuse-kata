@@ -54,12 +54,28 @@ public class Mower {
         }
     }
 
-    public void moveForward() {
+    public void moveForward(Grid grid) {
         switch (orientation) {
-            case 'N' -> y += 1; // Move up (north increases y-coordinate)
-            case 'E' -> x += 1; // Move right (east increases x-coordinate)
-            case 'S' -> y -= 1; // Move down (south decreases y-coordinate)
-            case 'W' -> x -= 1; // Move left (west decreases x-coordinate)
+            case 'N' -> {
+                if (grid.isWithinBounds(x, y + 1)) {
+                    y += 1;
+                }
+            }
+            case 'E' -> {
+                if (grid.isWithinBounds(x + 1, y)) {
+                    x += 1;
+                }
+            }
+            case 'S' -> {
+                if (grid.isWithinBounds(x, y - 1)) {
+                    y -= 1;
+                }
+            }
+            case 'W' -> {
+                if (grid.isWithinBounds(x - 1, y)) {
+                    x -= 1;
+                }
+            }
             default -> throw new IllegalStateException("Invalid orientation: " + orientation);
         }
     }
