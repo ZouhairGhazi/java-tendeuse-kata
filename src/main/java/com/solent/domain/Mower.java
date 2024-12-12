@@ -2,11 +2,14 @@ package com.solent.domain;
 
 public class Mower {
 
-    private final int x;
-    private final int y;
-    private final char orientation;
+    private int x;
+    private int y;
+    private char orientation;
 
     public Mower(int x, int y, char orientation) {
+        if (!isValidOrientation(orientation)) {
+            throw new IllegalArgumentException("Invalid orientation: " + orientation);
+        }
         this.x = x;
         this.y = y;
         this.orientation = orientation;
@@ -22,5 +25,19 @@ public class Mower {
 
     public char getOrientation() {
         return orientation;
+    }
+
+    public void turnLeft() {
+        switch (orientation) {
+            case 'N' -> orientation = 'W';
+            case 'W' -> orientation = 'S';
+            case 'S' -> orientation = 'E';
+            case 'E' -> orientation = 'N';
+            default -> throw new IllegalStateException("Invalid orientation: " + orientation);
+        }
+    }
+
+    private boolean isValidOrientation(char orientation) {
+        return orientation == 'N' || orientation == 'E' || orientation == 'S' || orientation == 'W';
     }
 }
