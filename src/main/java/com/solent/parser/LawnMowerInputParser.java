@@ -29,10 +29,12 @@ public class LawnMowerInputParser {
         // Creating mower using parsed data
         Mower mower = new Mower(x, y, orientation); // Placeholder mower
 
-        // Create dummy values for the rest of ParsedInput
-        List<Character> dummyCommands = List.of(); // Placeholder commands
+        // Creating commands using parsed data
+        List<Character> commands = fileContentList[2].chars()
+                .mapToObj(c -> (char) c)
+                .toList();
 
         // Return the ParsedInput object
-        return new ParsedInput(grid, mower, dummyCommands);
+        return new ParsedInput(grid, mower, commands);
     }
 }

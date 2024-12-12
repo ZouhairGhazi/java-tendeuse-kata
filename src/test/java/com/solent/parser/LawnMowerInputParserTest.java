@@ -3,6 +3,8 @@ package com.solent.parser;
 import com.solent.dto.ParsedInput;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LawnMowerInputParserTest {
@@ -37,5 +39,19 @@ class LawnMowerInputParserTest {
         assertEquals(1, result.mower().getX(), "Mower X-coordinate should be 1");
         assertEquals(2, result.mower().getY(), "Mower Y-coordinate should be 2");
         assertEquals('N', result.mower().getOrientation(), "Mower orientation should be 'N'");
+    }
+
+    @Test
+    public void shouldParseCommandsFromInput() {
+
+        String input = "5 5\n1 2 N\nGAADA";
+        LawnMowerInputParser parser = new LawnMowerInputParser();
+
+        ParsedInput result = parser.parse(input);
+
+        // Assertions
+        assertNotNull(result, "ParsedInput should not be null");
+        assertNotNull(result.commands(), "Commands list should not be null");
+        assertEquals(List.of('G', 'A', 'A', 'D', 'A'), result.commands(), "Commands should match expected sequence");
     }
 }
