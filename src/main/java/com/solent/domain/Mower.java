@@ -27,6 +27,10 @@ public class Mower {
         return orientation;
     }
 
+    private boolean isValidOrientation(char orientation) {
+        return orientation == 'N' || orientation == 'E' || orientation == 'S' || orientation == 'W';
+    }
+
     public void turnLeft() {
         switch (orientation) {
             case 'N' -> orientation = 'W';
@@ -37,7 +41,13 @@ public class Mower {
         }
     }
 
-    private boolean isValidOrientation(char orientation) {
-        return orientation == 'N' || orientation == 'E' || orientation == 'S' || orientation == 'W';
+    public void turnRight() {
+        switch (orientation) {
+            case 'N' -> orientation = 'E';
+            case 'E' -> orientation = 'S';
+            case 'S' -> orientation = 'W';
+            case 'W' -> orientation = 'N';
+            default -> throw new IllegalStateException("Invalid orientation: " + orientation);
+        }
     }
 }
