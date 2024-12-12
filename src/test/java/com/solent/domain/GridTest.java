@@ -30,4 +30,15 @@ class GridTest {
         assertFalse(grid.isWithinBounds(3, 6));
     }
 
+    @Test
+    public void shouldHandleLargeGridsCorrectly() {
+
+        Grid grid = new Grid(100, 100);
+
+        // Assertions
+        assertTrue(grid.isWithinBounds(50, 50), "Position (50, 50) should be within bounds in a large grid");
+        assertFalse(grid.isWithinBounds(101, 50), "Position (101, 50) should be out of bounds in a large grid");
+        assertFalse(grid.isWithinBounds(50, 101), "Position (50, 101) should be out of bounds in a large grid");
+    }
+
 }
