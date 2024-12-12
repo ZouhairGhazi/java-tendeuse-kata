@@ -35,10 +35,10 @@ class LawnMowerInputParserTest {
 
         // Assertions
         assertNotNull(result, "ParsedInput should not be null");
-        assertNotNull(result.mower(), "Mower should not be null");
-        assertEquals(1, result.mower().getX(), "Mower X-coordinate should be 1");
-        assertEquals(2, result.mower().getY(), "Mower Y-coordinate should be 2");
-        assertEquals('N', result.mower().getOrientation(), "Mower orientation should be 'N'");
+        assertNotNull(result.mowers().get(0), "Mower should not be null");
+        assertEquals(1, result.mowers().get(0).getX(), "Mower X-coordinate should be 1");
+        assertEquals(2, result.mowers().get(0).getY(), "Mower Y-coordinate should be 2");
+        assertEquals('N', result.mowers().get(0).getOrientation(), "Mower orientation should be 'N'");
     }
 
     @Test
@@ -52,6 +52,6 @@ class LawnMowerInputParserTest {
         // Assertions
         assertNotNull(result, "ParsedInput should not be null");
         assertNotNull(result.commands(), "Commands list should not be null");
-        assertEquals(List.of('G', 'A', 'A', 'D', 'A'), result.commands(), "Commands should match expected sequence");
+        assertEquals(List.of('G', 'A', 'A', 'D', 'A'), result.commands().get(0), "Commands should match expected sequence");
     }
 }

@@ -4,37 +4,58 @@ import com.solent.domain.Grid;
 import com.solent.domain.Mower;
 import com.solent.dto.ParsedInput;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LawnMowerInputParser {
 
     public ParsedInput parse(String fileContent) {
 
-        String[] fileContentList = fileContent.split("\n");
+        try {
 
-        // Parse grid dimensions (first line)
-        String[] gridDimensions = fileContentList[0].split(" ");
-        int width = Integer.parseInt(gridDimensions[0]);
-        int height = Integer.parseInt(gridDimensions[1]);
+            String[] fileContentList = fileContent.split("\\r?\\n");
 
-        // Creating grid using parsed data
-        Grid grid = new Grid(width, height);
+            // Parse grid dimensions
+            String[] gridDimensions = fileContentList[0].split(" ");
+            if (gridDimensions.length != 2) {
+                throw new IllegalArgumentException("Invalid grid dimensions: " + fileContentList[0]);
+            }
 
-        // Parse mower position and orientation (second line)
-        String[] moverDetails = fileContentList[1].split(" ");
-        int x = Integer.parseInt(moverDetails[0]);
-        int y = Integer.parseInt(moverDetails[1]);
-        char orientation = moverDetails[2].charAt(0);
+            // Creating grid using parsed data
+            int width = Integer.parseInt(gridDimensions[0]);
+            int height = Integer.parseInt(gridDimensions[1]);
+            Grid grid = new Grid(width, height);
 
-        // Creating mower using parsed data
-        Mower mower = new Mower(x, y, orientation); // Placeholder mower
+            // Parse mowers and commands
+            List<Mower> mowers = new ArrayList<>();
+            List<List<Character>> commands = new ArrayList<>();
 
-        // Creating commands using parsed data
-        List<Character> commands = fileContentList[2].chars()
-                .mapToObj(c -> (char) c)
-                .toList();
+            for (int i = 1; i < fileContentList.length; i += 2) {
+                String[] moverDetails = fileContentList[i].split(" ");
 
-        // Return the ParsedInput object
-        return new ParsedInput(grid, mower, commands);
+                if (moverDetails.length != 3) {
+                    throw new IllegalArgumentException("Invalid mower info: " + fileContentList[i]);
+                }
+
+                int x = Integer.parseInt(moverDetails[0]);
+                int y = Integer.parseInt(moverDetails[1]);
+                char orientation = moverDetails[2].charAt(0);
+
+                Mower mower = new Mower(x, y, orientation);
+                mowers.add(mower);
+
+                // Parse commands for this mower
+                String commandString = fileContentList[i + 1];
+                List<Character> commandList = commandString.chars()
+                        .mapToObj(c -> (char) c)
+                        .toList();
+                commands.add(commandList);
+            }
+
+            return new ParsedInput(grid, mowers, commands);
+        } catch (Exception e) {
+            System.err.println("Error during parsing: " + e.getMessage());
+            throw e;
+        }
     }
 }
